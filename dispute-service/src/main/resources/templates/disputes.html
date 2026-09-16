@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>All Disputes</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+
+<h2>All Disputes</h2>
+
+<button onclick="loadDisputes()">
+    Load Disputes
+</button>
+
+<hr>
+
+<div id="result"></div>
+
+<script>
+
+    async function loadDisputes() {
+
+        const response = await fetch("/api/disputes");
+
+        const disputes = await response.json();
+
+        let html = "";
+
+        disputes.forEach(dispute => {
+
+            html += `
+                <div>
+                    <h3>Dispute ID: ${dispute.disputeId}</h3>
+                    <p>Transaction: ${dispute.transactionId}</p>
+                    <p>Reason: ${dispute.reason}</p>
+                    <p>Status: ${dispute.status}</p>
+                    <hr>
+                </div>
+            `;
+        });
+
+        document.getElementById("result").innerHTML = html;
+    }
+
+</script>
+
+</body>
+</html>
