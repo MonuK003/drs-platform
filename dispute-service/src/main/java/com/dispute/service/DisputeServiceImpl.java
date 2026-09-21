@@ -43,7 +43,7 @@ public class DisputeServiceImpl implements DisputeService {
                     userServiceClient.getUserSummary(request.getCustomerId());
         }catch(RetryableException ex) {
 
-            throw new UserServiceUnavailableException("Services is gcrrurnly unavalibe",ex);
+            throw new UserServiceUnavailableException("Services is Unavilable",ex);
 
         }
 
