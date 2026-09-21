@@ -1,6 +1,6 @@
 \# DRS Platform
 
-
+\Drs application is still need to do work 
 
 Dispute Resolution System built using Java and Spring Boot microservices.
 
