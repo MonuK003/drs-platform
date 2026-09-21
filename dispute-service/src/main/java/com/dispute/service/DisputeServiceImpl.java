@@ -7,7 +7,10 @@ import com.dispute.dto.Request.TransactionValidationRequest;
 import com.dispute.dto.response.*;
 import com.dispute.entity.Dispute;
 import com.dispute.exception.ResourceNotFoundException;
+import com.dispute.exception.UserNotFoundException;
+import com.dispute.exception.UserServiceUnavailableException;
 import com.dispute.repository.DisputeRepository;
+import feign.RetryableException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -32,8 +35,22 @@ public class DisputeServiceImpl implements DisputeService {
     public  CreateDisputeResponse createDispute(CreateDisputeRequest request) {
 
         // 1. Validate customer for BankCustomerServices
-        UserSummaryResponse user =
-                userServiceClient.getUserSummary(request.getCustomerId());
+
+        //this other services whcih could be down
+         UserSummaryResponse user;
+        try {
+             user =
+                    userServiceClient.getUserSummary(request.getCustomerId());
+        }catch(RetryableException ex) {
+
+            throw new UserServiceUnavailableException("Services is gcrrurnly unavalibe",ex);
+
+        }
+
+
+          if(user == null){
+              throw new UserNotFoundException("Please Enter the valid user Name");
+          }
 
      //Fetching the Details from the DisputeRequest for validating Transaction
 
@@ -46,7 +63,7 @@ public class DisputeServiceImpl implements DisputeService {
         TransactionValidationResponse transactionValidationResponse=transactionClient. validate(transactionValidationRequest);
 
 
-        // 3. Check validation
+        // 3. Check validation for transaction
         if (!transactionValidationResponse.isValid()) {
             throw new RuntimeException(
                     "Transaction validation failed: "
