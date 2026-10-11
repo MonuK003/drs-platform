@@ -25,4 +25,7 @@ public class ApiErrorResponse {
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
+
+
+
 }
