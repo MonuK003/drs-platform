@@ -192,7 +192,7 @@ public class DisputeServiceImpl implements DisputeService {
         response.setCreatedAt(dispute.getCreatedAt());
         response.setUpdatedAt(dispute.getUpdatedAt());
 
-        System.out.println(" changes has been done alreadygit");
+        System.out.println(" changes has been done algit readygit");
         return response;
     }
 
