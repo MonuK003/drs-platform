@@ -1,5 +1,6 @@
 package com.dispute.exception;
 
+import com.dispute.dto.ApiErrroResponse.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -78,4 +79,33 @@ public class GlobalExceptionHandler {
                 response,
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+   //Handled the user not found
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleUserNotFound(UserNotFoundException ex){
+
+            ApiErrorResponse response=new ApiErrorResponse(404, ex.getMessage());
+
+             return ResponseEntity
+                     .status(HttpStatus.NOT_FOUND)
+                     .body(response);
+
+    }
+
+    @ExceptionHandler(UserServiceUnavailableException.class)
+    public ResponseEntity<ApiErrorResponse> handleUserServiceUnavailable(
+            UserServiceUnavailableException ex) {
+
+        ApiErrorResponse response = new ApiErrorResponse(
+                500,
+                ex.getMessage()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(response);
+    }
+
+
 }
